@@ -4,6 +4,14 @@ include('./auth/verify_login.php');
 
 $key_usuario = $_SESSION['key_usuario'];
 
+function corta_com_ellipsis($texto, $limite = 200) {
+    if (mb_strlen($texto) > $limite) {
+        return mb_substr($texto, 0, $limite) . '...';
+    } else {
+        return $texto;
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -66,13 +74,13 @@ $key_usuario = $_SESSION['key_usuario'];
                 <div class="card">
                     <div class="card-header text-white"> Minhas Tarefas </div>
                     <div class="card-body">
-                            <table class="table table-striped">
+                            <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Título</th>
-                                        <th>Descrição</th>
-                                        <th>Data de Criação</th>
-                                        <th>Ações</th>
+                                        <th> Título </th>
+                                        <th class="actions-cell" style="width: 700px;"> Descrição </th>
+                                        <th> Data de Criação </th>
+                                        <th class="actions-cell"> Ações </th>
                                     </tr>
                                 </thead>
                                 <tbody id="tarefas-tbody">
@@ -86,12 +94,17 @@ $key_usuario = $_SESSION['key_usuario'];
                                     ?>
                                     <tr>
                                         <td><?php echo $row['titulo']; ?></td>
-                                        <td><?php echo $row['descricao']; ?></td>
-                                        <td><?php echo date('d/m/Y', strtotime($row['data_criacao'])); ?></td>
-                                        <td>
-                                            <a href="./edit_task.php?key_tarefa=<?php echo $row['key_tarefa']; ?>" class="btn btn-sm btn-warning"> Editar </a>
-                                            <a href="./actions/delete.php?key_tarefa=<?php echo $row['key_tarefa']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja excluir essa tarefa?')"> Excluir </a>
+                                        <td class="description-cell">
+                                            <div class="description-ellipsis">
+                                                <?php echo corta_com_ellipsis($row['descricao'], 200); ?>
+                                            </div>
                                         </td>
+                                        <td><?php echo date('d/m/Y', strtotime($row['data_criacao'])); ?></td>
+                                        <td class="actions-cell" style="min-width: 200px;">
+                                            <div>
+                                                <a href="./edit_task.php?key_tarefa=<?php echo $row['key_tarefa']; ?>" class="btn btn-sm btn-warning"> Editar </a>
+                                                <a href="./actions/delete.php?key_tarefa=<?php echo $row['key_tarefa']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja excluir essa tarefa?')"> Excluir </a>
+                                            </div>
                                     </tr>
                                     <?php
                                         endwhile;

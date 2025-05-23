@@ -180,6 +180,26 @@ header h1 {
   border: 1px solid #fca5a5;
 }
 
+.table td, .table th {
+  vertical-align: top;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.table td.actions-cell, .table th.actions-cell {
+  width: 120px;
+  min-width: 110px;
+  text-align: right;
+  vertical-align: top;
+}
+
+.table td.description-cell, .table th.description-cell {
+  max-width: 340px;
+  width: 340px;
+  min-width: 200px;
+  padding-right: 8px;
+}
+
 @media (max-width: 600px) {
   .card, .alert {
     padding: 10px;
