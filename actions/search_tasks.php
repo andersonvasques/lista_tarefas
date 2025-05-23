@@ -2,6 +2,14 @@
 session_start();
 include('../connection.php');
 
+function corta_com_ellipsis($texto, $limite = 200) {
+    if (mb_strlen($texto) > $limite) {
+        return mb_substr($texto, 0, $limite) . '...';
+    } else {
+        return $texto;
+    }
+}
+
 $fk_usuario = $_SESSION['key_usuario'];
 $search = isset($_GET['q']) ? trim($_GET['q']) : '';
 $search_esc = mysqli_real_escape_string($conexao, $search);
@@ -18,7 +26,7 @@ if (mysqli_num_rows($result) > 0): ?>
     <div class="card">
         <div class="card-header text-white"> Minhas Tarefas </div>
         <div class="card-body">
-            <table class="table table-striped">
+            <table class="table">
                 <thead>
                     <tr>
                         <th> Título </th>
@@ -33,7 +41,7 @@ if (mysqli_num_rows($result) > 0): ?>
                             <td> <?php echo htmlspecialchars($row['titulo']); ?> </td>
                             <td> <?php echo htmlspecialchars($row['descricao']); ?> </td>
                             <td> <?php echo date('d/m/Y', strtotime($row['data_criacao'])); ?> </td>
-                            <td>
+                            <td style="min-width: 200px;">
                                 <a href="../edit_task.php?key_tarefa=<?php echo $row['key_tarefa']; ?>" class="btn btn-sm btn-warning"> Editar </a>
                                 <a href="./delete.php?key_tarefa=<?php echo $row['key_tarefa']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja excluir essa tarefa?')"> Excluir </a>
                             </td>
